@@ -65,7 +65,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                innopolis.university.differentialequationproject/innopolis.university.differentialequationproject.HelloApplication
+                                innopolis.university.differentialequationproject/innopolis.university.differentialequationproject.MainPane
                             </mainClass>
                         </configuration>
                     </execution>
