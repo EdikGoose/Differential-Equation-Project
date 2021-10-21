@@ -28,6 +28,7 @@ public class MainPane extends Application {
         Tab mainGraphsTab = new Tab("Graphs",mainGraphsPane.getRoot());
 
 
+
         root.getTabs().addAll(mainGraphsTab);
 
         Scene scene = new Scene(root);

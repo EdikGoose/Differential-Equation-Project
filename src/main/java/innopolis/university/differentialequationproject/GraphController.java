@@ -1,21 +1,39 @@
 package innopolis.university.differentialequationproject;
 
+import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsController;
+import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsForMainController;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.EulerMethod;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.ExactSolution;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.ImprovedEulerMethod;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.RungeKuttaMethod;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 
 public class GraphController {
     private final LineChart<Number, Number> graph;
-    private int startNumberOfPoints = 15;
+    private final int startNumberOfPoints = 15;
 
-    private final SeriesOfPointsController seriesOfPointsForExact;
-    private final SeriesOfPointsController seriesOfPointsForEuler;
-    private final SeriesOfPointsController seriesOfPointsForImprovedEuler;
-    private final SeriesOfPointsController seriesOfPointsForRunge;
+
+
+    private final ObservableList<SeriesOfPointsForMainController> seriesControllers;
+
+    private ObservableList<SeriesOfPointsForMainController> initializeListOfSeriesForGraphController(){
+        ObservableList<SeriesOfPointsForMainController> list = FXCollections.observableArrayList();
+
+        SeriesOfPointsForMainController seriesOfPointsForExact = new SeriesOfPointsForMainController(new DifferentialEquation(new ExactSolution()), "Exact Solution");
+        SeriesOfPointsForMainController seriesOfPointsForEuler = new SeriesOfPointsForMainController(new DifferentialEquation(new EulerMethod()),"Euler method");
+        SeriesOfPointsForMainController seriesOfPointsForImprovedEuler = new SeriesOfPointsForMainController(new DifferentialEquation(new ImprovedEulerMethod()), "Improved Euler method");
+        SeriesOfPointsForMainController seriesOfPointsForRunge = new SeriesOfPointsForMainController(new DifferentialEquation(new RungeKuttaMethod()),"Runge-Kutta Method");
+
+        list.addAll(seriesOfPointsForExact, seriesOfPointsForEuler, seriesOfPointsForImprovedEuler, seriesOfPointsForRunge);
+        return list;
+    }
+
+    private ObservableList<SeriesOfPointsController> initializeListOfSeriesForErrorsController(){
+        return null;
+    }
 
     public GraphController() {
         NumberAxis xAxis = new NumberAxis();
@@ -30,27 +48,18 @@ public class GraphController {
         graph.setAnimated(true);
         graph.setCreateSymbols(false);
 
-        seriesOfPointsForExact = new SeriesOfPointsController(new DifferentialEquation(new ExactSolution()));
-        seriesOfPointsForExact.setNameOfSeries("Exact Solution");
+        seriesControllers = initializeListOfSeriesForGraphController();
 
-        seriesOfPointsForEuler = new SeriesOfPointsController(new DifferentialEquation(new EulerMethod()));
-        seriesOfPointsForEuler.setNameOfSeries("Euler method");
-
-        seriesOfPointsForImprovedEuler = new SeriesOfPointsController(new DifferentialEquation(new ImprovedEulerMethod()));
-        seriesOfPointsForImprovedEuler.setNameOfSeries("Improved Euler method");
-
-        seriesOfPointsForRunge = new SeriesOfPointsController(new DifferentialEquation(new RungeKuttaMethod()));
-        seriesOfPointsForRunge.setNameOfSeries("Runge-Kutta Method");
-
-        graph.getData().addAll(seriesOfPointsForExact.getSeriesOfPoints(), seriesOfPointsForEuler.getSeriesOfPoints(), seriesOfPointsForImprovedEuler.getSeriesOfPoints(), seriesOfPointsForRunge.getSeriesOfPoints());
+       for(var seriesController : seriesControllers){
+           graph.getData().add(seriesController.getSeriesOfPoints());
+       }
 
     }
 
-    public void update(InitialValueProblem newInitialValueProblem, int newNumberOfPoints, double newMaxX){
-        seriesOfPointsForExact.update(newInitialValueProblem, newNumberOfPoints, newMaxX);
-        seriesOfPointsForEuler.update(newInitialValueProblem, newNumberOfPoints, newMaxX);
-        seriesOfPointsForImprovedEuler.update(newInitialValueProblem, newNumberOfPoints, newMaxX);
-        seriesOfPointsForRunge.update(newInitialValueProblem, newNumberOfPoints, newMaxX);
+    public void updateGraph(InitialValueProblem newInitialValueProblem, int newNumberOfPoints, double newMaxX){
+       for(var seriesController : seriesControllers){
+           seriesController.update(newInitialValueProblem, newNumberOfPoints, newMaxX);
+       }
     }
 
     public LineChart<Number, Number> getGraph() {

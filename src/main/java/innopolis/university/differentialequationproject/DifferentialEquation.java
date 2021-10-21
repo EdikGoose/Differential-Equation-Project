@@ -18,8 +18,10 @@ public class DifferentialEquation {
         this.initialValueProblem = new InitialValueProblem(1,10);
     }
 
-    public ObservableList<XYChart.Data<Number,Number>> getListOfPoints(List<Number> steps){
-       return solution.solutionFunc(steps, initialValueProblem);
+    public ObservableList<XYChart.Data<Number,Number>> getListOfSolutions(List<Number> steps){
+
+        return solution.solutionFunc(steps, initialValueProblem);
+
     }
 
     public Double[] getConstraintsX() {
