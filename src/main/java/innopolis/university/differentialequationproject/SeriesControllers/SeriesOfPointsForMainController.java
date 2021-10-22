@@ -15,17 +15,16 @@ public class SeriesOfPointsForMainController extends SeriesOfPointsController{
 
     @Override
     public void update(InitialValueProblem newInitialValueProblem, int newNumberOfPoints, double newMaxX) throws IllegalArgumentException {
-        if(newMaxX <= newInitialValueProblem.getX0()){
-            throw new IllegalArgumentException("X_MAX cannot be less than X0");
-        }
-
         differentialEquation.setConstraintsX(new Double[]{newInitialValueProblem.getX0(), newMaxX});
         differentialEquation.setInitialValueProblem(newInitialValueProblem);
         double step =  ((differentialEquation.getConstraintsX()[1] - differentialEquation.getConstraintsX()[0])/newNumberOfPoints);
-
-        if(step < 0 || step > 1.0){
-            throw new IllegalArgumentException("Step is not less than 1, please increase number of points");
+        if(newNumberOfPoints <= 0){
+            throw new IllegalArgumentException("N must be positive");
         }
+        if(step <= 0){
+            throw new IllegalArgumentException("X_MAX cannot be less than X_0");
+        }
+
 
         ObservableList<Number> listOfNewSteps = FXCollections.observableArrayList();
         for(double x = differentialEquation.getConstraintsX()[0]; x < differentialEquation.getConstraintsX()[1]; x+=step){

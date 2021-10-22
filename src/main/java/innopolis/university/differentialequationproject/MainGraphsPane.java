@@ -3,13 +3,12 @@ package innopolis.university.differentialequationproject;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 
@@ -28,12 +27,7 @@ public class MainGraphsPane {
         TextField exceptionLabel = new TextField("Illegal input");
         exceptionLabel.setEditable(false);
         exceptionLabel.setStyle("-fx-border-color: red;");
-        exceptionLabel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                exceptionLabel.setTooltip(new Tooltip(t1));
-            }
-        });
+
 
         ColumnConstraints columnForGraph = new ColumnConstraints();
         ColumnConstraints columnForSettings = new ColumnConstraints();
@@ -58,23 +52,44 @@ public class MainGraphsPane {
             settingsBox.getChildren().add(textFields[i]);
         }
 
-        Button plotButton = new Button("PLOT");
-        settingsBox.getChildren().add(plotButton);
+        Button updateButton = new Button("Update");
+        settingsBox.getChildren().add(updateButton);
 
 
-        plotButton.setOnAction(new EventHandler<ActionEvent>() {
+
+        ChoiceBox<String> choicenGraph = new ChoiceBox<>(FXCollections.observableArrayList("Main Graphs","LTE","GTE"));
+        settingsBox.getChildren().add(choicenGraph);
+
+
+        choicenGraph.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+               if(choicenGraph.getValue().equals("Main Graphs")){
+                   graphController.showMainGraphs();
+               }
+               else if(choicenGraph.getValue().equals("LTE")){
+                   graphController.showLTE();
+               }
+            }
+        });
+
+
+
+        updateButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try{
-                graphController.updateGraph(
-                        new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
-                                Double.parseDouble(textFields[1].getText())),
-                        Integer.parseInt(textFields[3].getText()),
-                        Double.parseDouble(textFields[2].getText()));
-                settingsBox.getChildren().remove(exceptionLabel);
+                    graphController.updateChart(
+                            new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
+                                    Double.parseDouble(textFields[1].getText())),
+                            Integer.parseInt(textFields[3].getText()),
+                            Double.parseDouble(textFields[2].getText()));
+                    settingsBox.getChildren().remove(exceptionLabel);
+                    choicenGraph.setValue("Main Graphs");
                 }
                 catch (IllegalArgumentException ie){
-                    exceptionLabel.setText(ie.getMessage());
+                    exceptionLabel.setText("ERROR");
+                    exceptionLabel.setTooltip(new Tooltip(ie.getMessage()));
                     if(!settingsBox.getChildren().contains(exceptionLabel))
                         settingsBox.getChildren().add(exceptionLabel);
                 }
@@ -85,9 +100,7 @@ public class MainGraphsPane {
 
 
 
-
-
-        root.add(graphController.getGraph(),0,0);
+        root.add(graphController.getChart(),0,0);
 
         root.add(settingsBox, 1, 0);
 

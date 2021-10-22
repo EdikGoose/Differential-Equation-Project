@@ -14,8 +14,8 @@ public class RungeKuttaMethod implements Solution{
 
     private double getNextY(double previousX, double previousY, double sizeOfStep){
         double K1 = func(previousX, previousY);
-        double K2 = func(previousX+sizeOfStep/2, previousY+K1/2);
-        double K3 = func(previousX + sizeOfStep/2,previousY+K2/2);
+        double K2 = func(previousX + sizeOfStep/2, previousY + K1/2);
+        double K3 = func(previousX + sizeOfStep/2,previousY + K2/2);
         double K4 = func(previousX + sizeOfStep, previousY + K3);
 
         return previousY + (sizeOfStep/6)*(K1 + 2*K2 + 2*K3 + K4);

@@ -8,10 +8,6 @@ import javafx.scene.chart.XYChart;
 import java.util.List;
 
 public class ExactSolution implements Solution{
-
-
-
-
     @Override
     public ObservableList<XYChart.Data<Number, Number>> solutionFunc(List<Number> steps, InitialValueProblem initialValueProblem) {
         if(initialValueProblem.getX0() <= 0){
@@ -19,6 +15,9 @@ public class ExactSolution implements Solution{
         }
         if(initialValueProblem.getY0() < initialValueProblem.getX0()){
             throw new IllegalArgumentException("y0 cannot be less than x0");
+        }
+        if(steps.size() == 1 || steps.get(1).doubleValue()-steps.get(0).doubleValue() > 1) {
+            throw new IllegalArgumentException("Please, set bigger N for effective use of methods");
         }
 
         double C = (-Math.sqrt(initialValueProblem.getX0())-Math.sqrt(initialValueProblem.getY0()-initialValueProblem.getX0())) / (initialValueProblem.getY0() - 2*initialValueProblem.getX0());

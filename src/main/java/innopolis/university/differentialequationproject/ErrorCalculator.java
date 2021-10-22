@@ -1,6 +1,5 @@
-package innopolis.university.differentialequationproject.Errors;
+package innopolis.university.differentialequationproject;
 
-import innopolis.university.differentialequationproject.InitialValueProblem;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.ExactSolution;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.Solution;
 import javafx.collections.FXCollections;
@@ -9,11 +8,11 @@ import javafx.scene.chart.XYChart;
 
 import java.util.List;
 
-public class LTE {
+public class ErrorCalculator {
     private final ExactSolution exactSolution;
     private final Solution methodToCompare;
 
-    public LTE(Solution methodToCompare) {
+    public ErrorCalculator(Solution methodToCompare) {
         this.methodToCompare = methodToCompare;
         this.exactSolution = new ExactSolution();
     }
@@ -27,7 +26,7 @@ public class LTE {
         approxValues = methodToCompare.solutionFunc(steps, initialValueProblem);
 
         for(int i = 0; i < exactValues.size(); i++){
-            errors.add(new XYChart.Data<>(exactValues.get(i).getXValue(), Math.abs(exactValues.get(i).getYValue().doubleValue()) - Math.abs(approxValues.get(i).getYValue().doubleValue())));
+            errors.add(new XYChart.Data<>(exactValues.get(i).getXValue(), Math.abs(exactValues.get(i).getYValue().doubleValue() - approxValues.get(i).getYValue().doubleValue())));
         }
 
 
@@ -35,8 +34,7 @@ public class LTE {
     }
 
 
-
-    public double getMaxError(List<Number> steps, InitialValueProblem initialValueProblem){
+    private double getMaxLTE(List<Number> steps, InitialValueProblem initialValueProblem){
         ObservableList<XYChart.Data<Number,Number>> exactValues;
         ObservableList<XYChart.Data<Number,Number>> approxValues;
 
@@ -52,4 +50,7 @@ public class LTE {
 
         return maxError;
     }
+
+
+
 }
