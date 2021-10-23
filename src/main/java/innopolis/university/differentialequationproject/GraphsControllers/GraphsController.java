@@ -2,12 +2,6 @@ package innopolis.university.differentialequationproject.GraphsControllers;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
 import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsController;
-import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsForLTEController;
-import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsForMainController;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.EulerMethod;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.ExactSolution;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.ImprovedEulerMethod;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.RungeKuttaMethod;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
@@ -15,7 +9,7 @@ import javafx.scene.chart.NumberAxis;
 
 public abstract class GraphsController {
     protected final LineChart<Number, Number> chart;
-    protected ObservableList<SeriesOfPointsController> seriesOfPointsController;
+    protected ObservableList<SeriesOfPointsController> listOfSeriesOfPointsController;
 
     public GraphsController(String title) {
         NumberAxis xAxis = new NumberAxis();
@@ -26,9 +20,9 @@ public abstract class GraphsController {
         yAxis.setAnimated(true);
 
         chart = new LineChart<>(xAxis, yAxis);
-        this.seriesOfPointsController = initializeSeries();
+        this.listOfSeriesOfPointsController = initializeSeries();
 
-        for(var series : seriesOfPointsController){
+        for(var series : listOfSeriesOfPointsController){
             chart.getData().add(series.getSeriesOfPoints());
         }
 
@@ -38,9 +32,19 @@ public abstract class GraphsController {
     }
 
     public void update(InitialValueProblem initialValueProblem, int numberOfPoints, double maxX, int maxN){
-        for(var graph : seriesOfPointsController){
+        for(var graph : listOfSeriesOfPointsController){
             graph.update(initialValueProblem,numberOfPoints,maxX,maxN);
         }
+    }
+
+    public ObservableList<String> getNamesOfGraphs(){
+        ObservableList<String> listOfNames = FXCollections.observableArrayList();
+
+        for(var seriesController : listOfSeriesOfPointsController){
+           listOfNames.add(seriesController.getSeriesOfPoints().getName());
+        }
+
+        return listOfNames;
     }
 
     public LineChart<Number, Number> getChart() {
@@ -48,4 +52,13 @@ public abstract class GraphsController {
     }
 
     protected abstract ObservableList<SeriesOfPointsController> initializeSeries();
+
+    public void setVisibilityOfGraph(String nameOfGraph, boolean isVisible){
+        for(var graph : listOfSeriesOfPointsController){
+            if(nameOfGraph.equals(graph.getSeriesOfPoints().getName())){
+               graph.setVisibility(isVisible);
+               return;
+            }
+        }
+    }
 }

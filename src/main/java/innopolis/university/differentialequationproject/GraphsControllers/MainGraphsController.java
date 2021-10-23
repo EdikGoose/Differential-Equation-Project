@@ -1,6 +1,5 @@
 package innopolis.university.differentialequationproject.GraphsControllers;
 
-import innopolis.university.differentialequationproject.InitialValueProblem;
 import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsController;
 import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsForMainController;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.EulerMethod;

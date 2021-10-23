@@ -22,5 +22,23 @@ public abstract class SeriesOfPointsController {
         return seriesOfPoints;
     }
 
+    protected double calculateStep(double startX, double maxX, int numberOfPoints) throws IllegalArgumentException{
+        double step = (maxX - startX)/numberOfPoints;
 
+        if(numberOfPoints <= 0){
+            throw new IllegalArgumentException("N must be positive");
+        }
+        if(step <= 0){
+            throw new IllegalArgumentException("X_MAX cannot be less than X_0");
+        }
+
+        return step;
+    }
+
+    public void setVisibility(boolean isVisible){
+        seriesOfPoints.getNode().setVisible(isVisible);
+    }
+    public boolean getVisibility(){
+        return seriesOfPoints.getNode().isVisible();
+    }
 }

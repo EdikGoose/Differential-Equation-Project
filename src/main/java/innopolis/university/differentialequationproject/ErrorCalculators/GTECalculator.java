@@ -9,7 +9,7 @@ import javafx.scene.chart.XYChart;
 import java.util.List;
 
 public class GTECalculator {
-    private LTECalculator lteCalculator;
+    private final LTECalculator lteCalculator;
 
     public GTECalculator(Solution methodToCompare) {
         this.lteCalculator = new LTECalculator(methodToCompare);

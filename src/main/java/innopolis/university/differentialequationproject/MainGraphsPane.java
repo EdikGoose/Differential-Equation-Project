@@ -13,9 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-import java.util.LinkedList;
-import java.util.List;
-
 
 public class MainGraphsPane {
     private final GridPane root;
@@ -35,14 +32,16 @@ public class MainGraphsPane {
         exceptionLabel.setStyle("-fx-border-color: red;");
 
         RowConstraints rowForSettings = new RowConstraints();
-        rowForSettings.setPercentHeight(10);
+        rowForSettings.setPercentHeight(5);
         RowConstraints rowForLineCharts = new RowConstraints();
         rowForLineCharts.setPercentHeight(90);
+        RowConstraints rowForCheckBoxes = new RowConstraints();
+        rowForCheckBoxes.setPercentHeight(5);
 
         ColumnConstraints mainColumn = new ColumnConstraints();
         mainColumn.setPercentWidth(100);
 
-        root.getRowConstraints().addAll(rowForSettings, rowForLineCharts);
+        root.getRowConstraints().addAll(rowForSettings, rowForLineCharts, rowForCheckBoxes);
         root.getColumnConstraints().add(mainColumn);
 
         HBox chartsBox = new HBox();
@@ -71,44 +70,58 @@ public class MainGraphsPane {
 
 
 
+        HBox checkBoxes = new HBox();
+        checkBoxes.setStyle("-fx-border-color: black;");
+        checkBoxes.setAlignment(Pos.CENTER);
+        checkBoxes.setSpacing(10);
 
-        updateButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    for (var lineChart : listOfLineCharts) {
-                        chartsBox.setVisible(true);
-                        lineChart.update(
-                                new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
-                                        Double.parseDouble(textFields[1].getText())),
-                                        Integer.parseInt(textFields[3].getText()),
-                                        Double.parseDouble(textFields[2].getText()),
-                                        Integer.parseInt(textFields[4].getText())
-                        );
-                        settingsBox.getChildren().remove(exceptionLabel);
+        ObservableList<CheckBox> listOfCheckBoxes = FXCollections.observableArrayList();
+        for(String nameOfGraph : listOfLineCharts.get(1).getNamesOfGraphs()){
+            CheckBox checkBox = new CheckBox(nameOfGraph);
+            checkBox.setSelected(true);
+
+           listOfCheckBoxes.add(checkBox);
+        }
+
+        for(var checkBox : listOfCheckBoxes){
+            checkBoxes.getChildren().add(checkBox);
+        }
+
+        for(var checkBox : listOfCheckBoxes) {
+            checkBox.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    for (var chart : listOfLineCharts) {
+                        chart.setVisibilityOfGraph(checkBox.getText(), checkBox.isSelected());
                     }
                 }
-                catch(IllegalArgumentException ie){
-                        chartsBox.setVisible(false);
-                        exceptionLabel.setTooltip(new Tooltip(ie.getMessage()));
-                        if (!settingsBox.getChildren().contains(exceptionLabel))
-                            settingsBox.getChildren().add(exceptionLabel);
+            });
+        }
+
+        updateButton.setOnAction(buttonIsPressed -> {
+            try {
+                for (var lineChart : listOfLineCharts) {
+                    chartsBox.setVisible(true);
+                    lineChart.update(
+                            new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
+                                    Double.parseDouble(textFields[1].getText())),
+                            Integer.parseInt(textFields[3].getText()),
+                            Double.parseDouble(textFields[2].getText()),
+                            Integer.parseInt(textFields[4].getText())
+                    );
+                    settingsBox.getChildren().remove(exceptionLabel);
                 }
+            } catch (IllegalArgumentException ie) {
+                chartsBox.setVisible(false);
+                exceptionLabel.setTooltip(new Tooltip(ie.getMessage()));
+                if (!settingsBox.getChildren().contains(exceptionLabel))
+                    settingsBox.getChildren().add(exceptionLabel);
             }
         });
 
-
-
-
-
-
-
-        root.add(chartsBox,0,1);
         root.add(settingsBox, 0, 0);
-
-
-
-
+        root.add(chartsBox,0,1);
+        root.add(checkBoxes, 0, 2);
     }
 
 
