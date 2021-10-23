@@ -8,15 +8,10 @@ import javafx.scene.chart.XYChart;
 import java.util.List;
 
 public class ImprovedEulerMethod implements Solution{
-
-    private double func(double x, double y){
-        return (Math.sqrt(y-x)/Math.sqrt(x)) +  1;
-    }
-
     private double getNextY(double previousX, double previousY, double sizeOfStep){
-        double K1 = func(previousX, previousY);
-        double K2 = func(previousX+sizeOfStep, previousY+K1);
-        return previousY + (sizeOfStep/2)*(K1 + K2);
+        double K1 = sizeOfStep*func(previousX, previousY);
+        double K2 = sizeOfStep*func(previousX+sizeOfStep, previousY+K1);
+        return previousY + (1.0/2.0)*(K1 + K2);
     }
     @Override
     public ObservableList<XYChart.Data<Number, Number>> solutionFunc(List<Number> steps, InitialValueProblem initialValueProblem) {

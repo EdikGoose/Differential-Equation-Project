@@ -8,17 +8,14 @@ import javafx.scene.chart.XYChart;
 import java.util.List;
 
 public class RungeKuttaMethod implements Solution{
-    private double func(double x, double y){
-        return (Math.sqrt(y-x)/Math.sqrt(x)) +  1;
-    }
 
     private double getNextY(double previousX, double previousY, double sizeOfStep){
-        double K1 = func(previousX, previousY);
-        double K2 = func(previousX + sizeOfStep/2, previousY + K1/2);
-        double K3 = func(previousX + sizeOfStep/2,previousY + K2/2);
-        double K4 = func(previousX + sizeOfStep, previousY + K3);
+        double K1 = sizeOfStep*func(previousX, previousY);
+        double K2 = sizeOfStep*func(previousX + sizeOfStep*0.5, previousY + K1*0.5);
+        double K3 = sizeOfStep*func(previousX + sizeOfStep*0.5,previousY + K2*0.5);
+        double K4 = sizeOfStep*func(previousX + sizeOfStep, previousY + K3);
 
-        return previousY + (sizeOfStep/6)*(K1 + 2*K2 + 2*K3 + K4);
+        return previousY + (1.0/6.0)*(K1 + 2*K2 + 2*K3 + K4);
     }
     @Override
     public ObservableList<XYChart.Data<Number, Number>> solutionFunc(List<Number> steps, InitialValueProblem initialValueProblem) {

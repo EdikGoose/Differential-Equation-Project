@@ -36,18 +36,11 @@ public class LTECalculator {
 
 
     public double getMaxLTE(List<Number> steps, InitialValueProblem initialValueProblem){
-        ObservableList<XYChart.Data<Number,Number>> exactValues;
-        ObservableList<XYChart.Data<Number,Number>> approxValues;
-
         double maxError = 0.0;
 
-        exactValues = exactSolution.solutionFunc(steps, initialValueProblem);
-        approxValues = methodToCompare.solutionFunc(steps, initialValueProblem);
-
-        for(int i = 0; i < exactValues.size(); i++){
-            maxError = Math.max(exactValues.get(i).getYValue().doubleValue() - approxValues.get(i).getYValue().doubleValue(), maxError);
+        for(var point : getLTEForSteps(steps, initialValueProblem)){
+            maxError = Math.max(maxError, point.getYValue().doubleValue());
         }
-
 
         return maxError;
     }

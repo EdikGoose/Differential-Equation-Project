@@ -8,10 +8,6 @@ import javafx.scene.chart.XYChart;
 import java.util.List;
 
 public class EulerMethod implements Solution{
-    private double func(double x, double y){
-        return (Math.sqrt(y-x)/Math.sqrt(x)) +  1;
-    }
-
     private double getNextY(double previousX, double previousY, double sizeOfStep){
         return previousY + (func(previousX, previousY)) * sizeOfStep;
     }

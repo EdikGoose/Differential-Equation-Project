@@ -21,7 +21,7 @@ public class MainGraphsPane {
     private final GridPane root;
 
 
-    private ObservableList<GraphsController> listOfLineCharts;
+    private final ObservableList<GraphsController> listOfLineCharts;
 
 
     public MainGraphsPane() {
@@ -31,7 +31,7 @@ public class MainGraphsPane {
 
 
 
-        Label exceptionLabel = new Label("Illegal input");
+        Label exceptionLabel = new Label("ERROR");
         exceptionLabel.setStyle("-fx-border-color: red;");
 
         RowConstraints rowForSettings = new RowConstraints();
@@ -45,6 +45,12 @@ public class MainGraphsPane {
         root.getRowConstraints().addAll(rowForSettings, rowForLineCharts);
         root.getColumnConstraints().add(mainColumn);
 
+        HBox chartsBox = new HBox();
+        for(var lineChart : listOfLineCharts){
+            chartsBox.getChildren().add(lineChart.getChart());
+            HBox.setHgrow(lineChart.getChart(),Priority.ALWAYS);
+            lineChart.getChart().setMaxWidth(Double.MAX_VALUE);
+        }
 
         HBox settingsBox = new HBox();
         settingsBox.setStyle("-fx-border-color: black;");
@@ -71,6 +77,7 @@ public class MainGraphsPane {
             public void handle(ActionEvent actionEvent) {
                 try {
                     for (var lineChart : listOfLineCharts) {
+                        chartsBox.setVisible(true);
                         lineChart.update(
                                 new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
                                         Double.parseDouble(textFields[1].getText())),
@@ -82,7 +89,7 @@ public class MainGraphsPane {
                     }
                 }
                 catch(IllegalArgumentException ie){
-                        exceptionLabel.setText("ERROR");
+                        chartsBox.setVisible(false);
                         exceptionLabel.setTooltip(new Tooltip(ie.getMessage()));
                         if (!settingsBox.getChildren().contains(exceptionLabel))
                             settingsBox.getChildren().add(exceptionLabel);
@@ -94,12 +101,7 @@ public class MainGraphsPane {
 
 
 
-        HBox chartsBox = new HBox();
-        for(var lineChart : listOfLineCharts){
-            chartsBox.getChildren().add(lineChart.getChart());
-            HBox.setHgrow(lineChart.getChart(),Priority.ALWAYS);
-            lineChart.getChart().setMaxWidth(Double.MAX_VALUE);
-        }
+
 
         root.add(chartsBox,0,1);
         root.add(settingsBox, 0, 0);

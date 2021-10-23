@@ -15,7 +15,12 @@ public class GTECalculator {
         this.lteCalculator = new LTECalculator(methodToCompare);
     }
 
-    public ObservableList<XYChart.Data<Number, Number>> getGTE(List<Number> steps, InitialValueProblem initialValueProblem, int maxN){
+    public ObservableList<XYChart.Data<Number, Number>> getGTE(List<Number> steps, InitialValueProblem initialValueProblem, int maxN) throws IllegalArgumentException{
+        if(steps.size() > maxN){
+            throw new IllegalArgumentException("Max N cannot be less than N");
+        }
+
+
         ObservableList<XYChart.Data<Number,Number>> errors = FXCollections.observableArrayList();
         for(int currentN = steps.size(); currentN < maxN; currentN++){
             double step = (steps.get(steps.size()-1).doubleValue() - steps.get(0).doubleValue())/currentN;
