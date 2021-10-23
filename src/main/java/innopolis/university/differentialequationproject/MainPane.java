@@ -22,16 +22,11 @@ import java.text.DecimalFormat;
 public class MainPane extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        TabPane root = new TabPane();
         MainGraphsPane mainGraphsPane = new MainGraphsPane();
 
-        Tab mainGraphsTab = new Tab("Graphs",mainGraphsPane.getRoot());
+     ;
 
-
-
-        root.getTabs().addAll(mainGraphsTab);
-
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(mainGraphsPane.getRoot());
 
         primaryStage.setScene(scene);
 

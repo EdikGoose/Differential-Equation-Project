@@ -1,8 +1,10 @@
 package innopolis.university.differentialequationproject;
 
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import innopolis.university.differentialequationproject.GraphsControllers.GTEGraphsController;
+import innopolis.university.differentialequationproject.GraphsControllers.GraphsController;
+import innopolis.university.differentialequationproject.GraphsControllers.LTEGraphsController;
+import innopolis.university.differentialequationproject.GraphsControllers.MainGraphsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,43 +13,49 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class MainGraphsPane {
     private final GridPane root;
 
 
-
-
-    private final GraphController graphController;
+    private ObservableList<GraphsController> listOfLineCharts;
 
 
     public MainGraphsPane() {
         root = new GridPane();
-        this.graphController = new GraphController();
-        TextField exceptionLabel = new TextField("Illegal input");
-        exceptionLabel.setEditable(false);
+        this.listOfLineCharts = FXCollections.observableArrayList();
+        listOfLineCharts.addAll(new MainGraphsController("Main Graphs"), new LTEGraphsController("Local Trancation Error"), new GTEGraphsController("Global Trancation Error"));
+
+
+
+        Label exceptionLabel = new Label("Illegal input");
         exceptionLabel.setStyle("-fx-border-color: red;");
 
+        RowConstraints rowForSettings = new RowConstraints();
+        rowForSettings.setPercentHeight(10);
+        RowConstraints rowForLineCharts = new RowConstraints();
+        rowForLineCharts.setPercentHeight(90);
 
-        ColumnConstraints columnForGraph = new ColumnConstraints();
-        ColumnConstraints columnForSettings = new ColumnConstraints();
-        columnForGraph.setPercentWidth(80);
-        columnForSettings.setPercentWidth(20);
-        root.getColumnConstraints().addAll(columnForGraph, columnForSettings);
-        RowConstraints mainRow = new RowConstraints();
-        mainRow.setPercentHeight(100);
-        root.getRowConstraints().add(mainRow);
+        ColumnConstraints mainColumn = new ColumnConstraints();
+        mainColumn.setPercentWidth(100);
 
-        VBox settingsBox = new VBox();
+        root.getRowConstraints().addAll(rowForSettings, rowForLineCharts);
+        root.getColumnConstraints().add(mainColumn);
+
+
+        HBox settingsBox = new HBox();
         settingsBox.setStyle("-fx-border-color: black;");
         settingsBox.setAlignment(Pos.CENTER);
         settingsBox.setSpacing(10);
 
-        Label[] labels = new Label[]{new Label("X0"), new Label("Y0"), new Label("X_MAX"), new Label("N")};
-        TextField[] textFields = new TextField[]{new TextField("1"), new TextField("10"), new TextField("10"), new TextField("100")};
+        Label[] labels = new Label[]{new Label("X0:"), new Label("Y0:"), new Label("X_MAX:"), new Label("N:"), new Label("Max N: ")};
+        TextField[] textFields = new TextField[]{new TextField("1"), new TextField("10"), new TextField("10"), new TextField("100"), new TextField("200")};
 
 
-        for(int i = 0;i < 4;i++){
+        for(int i = 0;i < labels.length; i++){
             settingsBox.getChildren().add(labels[i]);
             settingsBox.getChildren().add(textFields[i]);
         }
@@ -57,41 +65,27 @@ public class MainGraphsPane {
 
 
 
-        ChoiceBox<String> choicenGraph = new ChoiceBox<>(FXCollections.observableArrayList("Main Graphs","LTE","GTE"));
-        settingsBox.getChildren().add(choicenGraph);
-
-
-        choicenGraph.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-               if(choicenGraph.getValue().equals("Main Graphs")){
-                   graphController.showMainGraphs();
-               }
-               else if(choicenGraph.getValue().equals("LTE")){
-                   graphController.showLTE();
-               }
-            }
-        });
-
-
 
         updateButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try{
-                    graphController.updateChart(
-                            new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
-                                    Double.parseDouble(textFields[1].getText())),
-                            Integer.parseInt(textFields[3].getText()),
-                            Double.parseDouble(textFields[2].getText()));
-                    settingsBox.getChildren().remove(exceptionLabel);
-                    choicenGraph.setValue("Main Graphs");
+                try {
+                    for (var lineChart : listOfLineCharts) {
+                        lineChart.update(
+                                new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
+                                        Double.parseDouble(textFields[1].getText())),
+                                        Integer.parseInt(textFields[3].getText()),
+                                        Double.parseDouble(textFields[2].getText()),
+                                        Integer.parseInt(textFields[4].getText())
+                        );
+                        settingsBox.getChildren().remove(exceptionLabel);
+                    }
                 }
-                catch (IllegalArgumentException ie){
-                    exceptionLabel.setText("ERROR");
-                    exceptionLabel.setTooltip(new Tooltip(ie.getMessage()));
-                    if(!settingsBox.getChildren().contains(exceptionLabel))
-                        settingsBox.getChildren().add(exceptionLabel);
+                catch(IllegalArgumentException ie){
+                        exceptionLabel.setText("ERROR");
+                        exceptionLabel.setTooltip(new Tooltip(ie.getMessage()));
+                        if (!settingsBox.getChildren().contains(exceptionLabel))
+                            settingsBox.getChildren().add(exceptionLabel);
                 }
             }
         });
@@ -100,9 +94,15 @@ public class MainGraphsPane {
 
 
 
-        root.add(graphController.getChart(),0,0);
+        HBox chartsBox = new HBox();
+        for(var lineChart : listOfLineCharts){
+            chartsBox.getChildren().add(lineChart.getChart());
+            HBox.setHgrow(lineChart.getChart(),Priority.ALWAYS);
+            lineChart.getChart().setMaxWidth(Double.MAX_VALUE);
+        }
 
-        root.add(settingsBox, 1, 0);
+        root.add(chartsBox,0,1);
+        root.add(settingsBox, 0, 0);
 
 
 

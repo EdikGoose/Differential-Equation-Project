@@ -1,9 +1,6 @@
 package innopolis.university.differentialequationproject.SeriesControllers;
 
-import innopolis.university.differentialequationproject.DifferentialEquation;
 import innopolis.university.differentialequationproject.InitialValueProblem;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 
@@ -19,11 +16,11 @@ public abstract class SeriesOfPointsController {
         seriesOfPoints.setName(name);
     }
 
-    public abstract void update(InitialValueProblem newInitialValueProblem, int newNumberOfPoints, double newMaxX) throws IllegalArgumentException;
-
-
+    public abstract void update(InitialValueProblem initialValueProblem, int numberOfPoints, double maxX, int maxN);
 
     public XYChart.Series<Number, Number> getSeriesOfPoints() {
         return seriesOfPoints;
     }
+
+
 }

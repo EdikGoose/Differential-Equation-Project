@@ -1,21 +1,22 @@
 package innopolis.university.differentialequationproject.SeriesControllers;
 
+import innopolis.university.differentialequationproject.ErrorCalculators.GTECalculator;
 import innopolis.university.differentialequationproject.InitialValueProblem;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.Solution;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class SeriesOfPointsForMainController extends SeriesOfPointsController{
-    private final Solution solution;
+public class SeriesOfPointsForGTEController extends SeriesOfPointsController {
+    private final GTECalculator errorCalculator;
 
-    public SeriesOfPointsForMainController(Solution solution, String name) {
+    public SeriesOfPointsForGTEController(GTECalculator errorCalculator, String name) {
         super(name);
-        this.solution = solution;
+        this.errorCalculator = errorCalculator;
     }
 
     @Override
-    public void update(InitialValueProblem initialValueProblem, int numberOfPoints, double maxX, int maxN) throws IllegalArgumentException {
-        double step =  ((maxX - initialValueProblem.getX0())/numberOfPoints);
+    public void update(InitialValueProblem initialValueProblem, int numberOfPoints, double maxX, int maxN){
+        double step = (maxX - initialValueProblem.getX0())/numberOfPoints;
+
         if(numberOfPoints <= 0){
             throw new IllegalArgumentException("N must be positive");
         }
@@ -29,7 +30,7 @@ public class SeriesOfPointsForMainController extends SeriesOfPointsController{
             listOfNewSteps.add(x);
         }
 
+        super.seriesOfPoints.setData(errorCalculator.getGTE(listOfNewSteps, initialValueProblem, maxN));
 
-        super.seriesOfPoints.setData(solution.solutionFunc(listOfNewSteps, initialValueProblem));
     }
 }

@@ -1,5 +1,6 @@
-package innopolis.university.differentialequationproject;
+package innopolis.university.differentialequationproject.ErrorCalculators;
 
+import innopolis.university.differentialequationproject.InitialValueProblem;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.ExactSolution;
 import innopolis.university.differentialequationproject.SolutionMethodsClasses.Solution;
 import javafx.collections.FXCollections;
@@ -8,11 +9,11 @@ import javafx.scene.chart.XYChart;
 
 import java.util.List;
 
-public class ErrorCalculator {
+public class LTECalculator {
     private final ExactSolution exactSolution;
     private final Solution methodToCompare;
 
-    public ErrorCalculator(Solution methodToCompare) {
+    public LTECalculator(Solution methodToCompare) {
         this.methodToCompare = methodToCompare;
         this.exactSolution = new ExactSolution();
     }
@@ -34,7 +35,7 @@ public class ErrorCalculator {
     }
 
 
-    private double getMaxLTE(List<Number> steps, InitialValueProblem initialValueProblem){
+    public double getMaxLTE(List<Number> steps, InitialValueProblem initialValueProblem){
         ObservableList<XYChart.Data<Number,Number>> exactValues;
         ObservableList<XYChart.Data<Number,Number>> approxValues;
 
@@ -50,7 +51,4 @@ public class ErrorCalculator {
 
         return maxError;
     }
-
-
-
 }

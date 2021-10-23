@@ -1,21 +1,23 @@
 package innopolis.university.differentialequationproject.SeriesControllers;
 
+import innopolis.university.differentialequationproject.ErrorCalculators.LTECalculator;
 import innopolis.university.differentialequationproject.InitialValueProblem;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.Solution;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 
-public class SeriesOfPointsForMainController extends SeriesOfPointsController{
-    private final Solution solution;
+public class SeriesOfPointsForLTEController extends SeriesOfPointsController{
+    private final LTECalculator errorCalculator;
 
-    public SeriesOfPointsForMainController(Solution solution, String name) {
+    public SeriesOfPointsForLTEController(LTECalculator errorCalculator, String name) {
         super(name);
-        this.solution = solution;
+        this.errorCalculator = errorCalculator;
     }
 
     @Override
     public void update(InitialValueProblem initialValueProblem, int numberOfPoints, double maxX, int maxN) throws IllegalArgumentException {
-        double step =  ((maxX - initialValueProblem.getX0())/numberOfPoints);
+        double step = (maxX - initialValueProblem.getX0())/numberOfPoints;
+
         if(numberOfPoints <= 0){
             throw new IllegalArgumentException("N must be positive");
         }
@@ -29,7 +31,7 @@ public class SeriesOfPointsForMainController extends SeriesOfPointsController{
             listOfNewSteps.add(x);
         }
 
+        super.seriesOfPoints.setData(errorCalculator.getLTEForSteps(listOfNewSteps, initialValueProblem));
 
-        super.seriesOfPoints.setData(solution.solutionFunc(listOfNewSteps, initialValueProblem));
     }
 }

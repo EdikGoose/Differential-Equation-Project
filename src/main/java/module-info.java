@@ -13,4 +13,6 @@ module innopolis.university.differentialequationproject {
     opens innopolis.university.differentialequationproject.SolutionMethodsClasses to javafx.fxml;
     exports innopolis.university.differentialequationproject.SeriesControllers;
     opens innopolis.university.differentialequationproject.SeriesControllers to javafx.fxml;
+    exports innopolis.university.differentialequationproject.GraphsControllers;
+    opens innopolis.university.differentialequationproject.GraphsControllers to javafx.fxml;
 }
