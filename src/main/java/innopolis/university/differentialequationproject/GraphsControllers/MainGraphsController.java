@@ -26,6 +26,4 @@ public class MainGraphsController extends GraphsController{
         list.addAll(seriesOfPointsForExact, seriesOfPointsForEuler, seriesOfPointsForImprovedEuler, seriesOfPointsForRunge);
         return list;
     }
-
-
 }

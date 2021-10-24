@@ -6,6 +6,8 @@ module innopolis.university.differentialequationproject {
     requires java.desktop;
     requires org.jfree.fxgraphics2d;
     requires jlatexmath;
+    requires javafx.swing;
+    requires javafx.web;
 
     opens innopolis.university.differentialequationproject to javafx.fxml;
     exports innopolis.university.differentialequationproject;

@@ -5,13 +5,23 @@ import innopolis.university.differentialequationproject.GraphsControllers.GTEGra
 import innopolis.university.differentialequationproject.GraphsControllers.GraphsController;
 import innopolis.university.differentialequationproject.GraphsControllers.LTEGraphsController;
 import innopolis.university.differentialequationproject.GraphsControllers.MainGraphsController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class MainGraphsPane {
@@ -26,41 +36,63 @@ public class MainGraphsPane {
         this.listOfLineCharts = FXCollections.observableArrayList();
         listOfLineCharts.addAll(new MainGraphsController("Main Graphs"), new LTEGraphsController("Local Trancation Error"), new GTEGraphsController("Global Trancation Error"));
 
-
-
         Label exceptionLabel = new Label("ERROR");
         exceptionLabel.setStyle("-fx-border-color: red;");
 
-        RowConstraints rowForSettings = new RowConstraints();
-        rowForSettings.setPercentHeight(5);
-        RowConstraints rowForLineCharts = new RowConstraints();
-        rowForLineCharts.setPercentHeight(90);
-        RowConstraints rowForCheckBoxes = new RowConstraints();
-        rowForCheckBoxes.setPercentHeight(5);
+        ColumnConstraints columnForCharts = new ColumnConstraints();
+        columnForCharts.setPercentWidth(75);
+        ColumnConstraints columnForSetting = new ColumnConstraints();
+        columnForSetting.setPercentWidth(25);
 
-        ColumnConstraints mainColumn = new ColumnConstraints();
-        mainColumn.setPercentWidth(100);
+        RowConstraints mainRow = new RowConstraints();
+        mainRow.setPercentHeight(100);
 
-        root.getRowConstraints().addAll(rowForSettings, rowForLineCharts, rowForCheckBoxes);
-        root.getColumnConstraints().add(mainColumn);
+        root.getColumnConstraints().addAll(columnForCharts, columnForSetting);
+        root.getRowConstraints().add(mainRow);
 
-        HBox chartsBox = new HBox();
-        for(var lineChart : listOfLineCharts){
+
+        VBox chartsBox = new VBox();
+        for (var lineChart : listOfLineCharts) {
             chartsBox.getChildren().add(lineChart.getChart());
-            HBox.setHgrow(lineChart.getChart(),Priority.ALWAYS);
-            lineChart.getChart().setMaxWidth(Double.MAX_VALUE);
+            VBox.setVgrow(lineChart.getChart(), Priority.ALWAYS);
         }
 
-        HBox settingsBox = new HBox();
+        TabPane tabPaneOfCharts = new TabPane();
+        for (var lineChart : listOfLineCharts) {
+            var tab = new Tab(lineChart.getChart().getTitle());
+            tab.setClosable(false);
+            tab.setContent(lineChart.getChart());
+            tabPaneOfCharts.getTabs().add(tab);
+        }
+
+
+        VBox settingsBox = new VBox();
         settingsBox.setStyle("-fx-border-color: black;");
         settingsBox.setAlignment(Pos.CENTER);
         settingsBox.setSpacing(10);
+
+        WebView browser = new WebView();
+
+        browser.setMaxHeight(300);
+        WebEngine webEngine = browser.getEngine();
+        File file = new File("/home/edikgoose/IdeaProjects/Differential-Equation-Project/src/main/resources/innopolis/university/differentialequationproject/DifferentialEquation.html");
+        URL url = null;
+        try {
+            url = file.toURI().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        // file:/C:/test/a.html
+        System.out.println("Local URL: " + url.toString());
+        webEngine.load(url.toString());
+
+        settingsBox.getChildren().add(browser);
 
         Label[] labels = new Label[]{new Label("X0:"), new Label("Y0:"), new Label("X_MAX:"), new Label("N:"), new Label("Max N: ")};
         TextField[] textFields = new TextField[]{new TextField("1"), new TextField("10"), new TextField("10"), new TextField("100"), new TextField("200")};
 
 
-        for(int i = 0;i < labels.length; i++){
+        for (int i = 0; i < labels.length; i++) {
             settingsBox.getChildren().add(labels[i]);
             settingsBox.getChildren().add(textFields[i]);
         }
@@ -69,39 +101,37 @@ public class MainGraphsPane {
         settingsBox.getChildren().add(updateButton);
 
 
-
-        HBox checkBoxes = new HBox();
+        VBox checkBoxes = new VBox();
         checkBoxes.setStyle("-fx-border-color: black;");
-        checkBoxes.setAlignment(Pos.CENTER);
         checkBoxes.setSpacing(10);
 
         ObservableList<CheckBox> listOfCheckBoxes = FXCollections.observableArrayList();
-        for(String nameOfGraph : listOfLineCharts.get(1).getNamesOfGraphs()){
+        for (String nameOfGraph : listOfLineCharts.get(1).getNamesOfGraphs()) {
             CheckBox checkBox = new CheckBox(nameOfGraph);
             checkBox.setSelected(true);
 
-           listOfCheckBoxes.add(checkBox);
+            listOfCheckBoxes.add(checkBox);
         }
 
-        for(var checkBox : listOfCheckBoxes){
+        for (var checkBox : listOfCheckBoxes) {
             checkBoxes.getChildren().add(checkBox);
         }
 
-        for(var checkBox : listOfCheckBoxes) {
-            checkBox.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    for (var chart : listOfLineCharts) {
-                        chart.setVisibilityOfGraph(checkBox.getText(), checkBox.isSelected());
-                    }
+        for (var checkBox : listOfCheckBoxes) {
+            checkBox.setOnAction(boxIsSelected -> {
+                for (var chart : listOfLineCharts) {
+                    chart.setVisibilityOfGraph(checkBox.getText(), checkBox.isSelected());
                 }
             });
         }
 
+        settingsBox.getChildren().add(checkBoxes);
+
+
         updateButton.setOnAction(buttonIsPressed -> {
             try {
                 for (var lineChart : listOfLineCharts) {
-                    chartsBox.setVisible(true);
+                    tabPaneOfCharts.setVisible(true);
                     lineChart.update(
                             new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
                                     Double.parseDouble(textFields[1].getText())),
@@ -112,20 +142,22 @@ public class MainGraphsPane {
                     settingsBox.getChildren().remove(exceptionLabel);
                 }
             } catch (IllegalArgumentException ie) {
-                chartsBox.setVisible(false);
+                tabPaneOfCharts.setVisible(false);
                 exceptionLabel.setTooltip(new Tooltip(ie.getMessage()));
                 if (!settingsBox.getChildren().contains(exceptionLabel))
                     settingsBox.getChildren().add(exceptionLabel);
             }
         });
 
-        root.add(settingsBox, 0, 0);
-        root.add(chartsBox,0,1);
-        root.add(checkBoxes, 0, 2);
+
+        root.add(settingsBox, 1, 0);
+        root.add(tabPaneOfCharts, 0, 0);
     }
 
 
     public Pane getRoot() {
         return root;
     }
+
+
 }
