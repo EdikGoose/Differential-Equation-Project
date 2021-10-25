@@ -4,7 +4,6 @@ import innopolis.university.differentialequationproject.ErrorCalculators.LTECalc
 import innopolis.university.differentialequationproject.InitialValueProblem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
 
 public class SeriesOfPointsForLTEController extends SeriesOfPointsController{
     private final LTECalculator errorCalculator;

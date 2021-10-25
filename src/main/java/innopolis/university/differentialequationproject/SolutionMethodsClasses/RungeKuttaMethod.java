@@ -25,7 +25,7 @@ public class RungeKuttaMethod implements Solution{
 
 
         for(int index = 1; index < steps.size(); index++){
-            values.add(new XYChart.Data<Number, Number>(steps.get(index), getNextY(steps.get(index-1).doubleValue(), values.get(index-1).getYValue().doubleValue(), sizeOfStep)));
+            values.add(new XYChart.Data<>(steps.get(index), getNextY(steps.get(index-1).doubleValue(), values.get(index-1).getYValue().doubleValue(), sizeOfStep)));
         }
 
         return values;

@@ -5,19 +5,13 @@ import innopolis.university.differentialequationproject.GraphsControllers.GTEGra
 import innopolis.university.differentialequationproject.GraphsControllers.GraphsController;
 import innopolis.university.differentialequationproject.GraphsControllers.LTEGraphsController;
 import innopolis.university.differentialequationproject.GraphsControllers.MainGraphsController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -65,7 +59,6 @@ public class MainGraphsPane {
             tabPaneOfCharts.getTabs().add(tab);
         }
 
-
         VBox settingsBox = new VBox();
         settingsBox.setStyle("-fx-border-color: black;");
         settingsBox.setAlignment(Pos.CENTER);
@@ -82,8 +75,7 @@ public class MainGraphsPane {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        // file:/C:/test/a.html
-        System.out.println("Local URL: " + url.toString());
+        assert url != null;
         webEngine.load(url.toString());
 
         settingsBox.getChildren().add(browser);
@@ -148,6 +140,8 @@ public class MainGraphsPane {
                     settingsBox.getChildren().add(exceptionLabel);
             }
         });
+
+
 
 
         root.add(settingsBox, 1, 0);

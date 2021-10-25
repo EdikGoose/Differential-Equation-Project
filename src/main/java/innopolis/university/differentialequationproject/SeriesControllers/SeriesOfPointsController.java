@@ -38,7 +38,4 @@ public abstract class SeriesOfPointsController {
     public void setVisibility(boolean isVisible){
         seriesOfPoints.getNode().setVisible(isVisible);
     }
-    public boolean getVisibility(){
-        return seriesOfPoints.getNode().isVisible();
-    }
 }

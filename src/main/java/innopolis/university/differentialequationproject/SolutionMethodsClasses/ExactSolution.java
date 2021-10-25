@@ -28,7 +28,7 @@ public class ExactSolution implements Solution{
             if(xValue < 0){
                 throw new IllegalArgumentException("x cannot be less or equal to 0");
             }
-            values.add(new XYChart.Data<Number, Number>(x,xValue*( (1/(C*C*xValue)) - 2/(C*Math.sqrt(xValue)) + 2)));
+            values.add(new XYChart.Data<>(x,xValue*( (1/(C*C*xValue)) - 2/(C*Math.sqrt(xValue)) + 2)));
         }
 
         return values;
