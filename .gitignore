@@ -54,6 +54,9 @@ cmake-build-*/
 # IntelliJ
 out/
 
+# Gaphor
+*.gaphor
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
