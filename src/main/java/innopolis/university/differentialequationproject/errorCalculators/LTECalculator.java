@@ -1,19 +1,19 @@
-package innopolis.university.differentialequationproject.Errors;
+package innopolis.university.differentialequationproject.errorCalculators;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.ExactSolution;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.Solution;
+import innopolis.university.differentialequationproject.solutionMethodsClasses.ExactSolution;
+import innopolis.university.differentialequationproject.solutionMethodsClasses.Solution;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 import java.util.List;
 
-public class LTE {
+public class LTECalculator {
     private final ExactSolution exactSolution;
     private final Solution methodToCompare;
 
-    public LTE(Solution methodToCompare) {
+    public LTECalculator(Solution methodToCompare) {
         this.methodToCompare = methodToCompare;
         this.exactSolution = new ExactSolution();
     }
@@ -27,7 +27,7 @@ public class LTE {
         approxValues = methodToCompare.solutionFunc(steps, initialValueProblem);
 
         for(int i = 0; i < exactValues.size(); i++){
-            errors.add(new XYChart.Data<>(exactValues.get(i).getXValue(), Math.abs(exactValues.get(i).getYValue().doubleValue()) - Math.abs(approxValues.get(i).getYValue().doubleValue())));
+            errors.add(new XYChart.Data<>(exactValues.get(i).getXValue(), Math.abs(exactValues.get(i).getYValue().doubleValue() - approxValues.get(i).getYValue().doubleValue())));
         }
 
 
@@ -35,20 +35,12 @@ public class LTE {
     }
 
 
-
-    public double getMaxError(List<Number> steps, InitialValueProblem initialValueProblem){
-        ObservableList<XYChart.Data<Number,Number>> exactValues;
-        ObservableList<XYChart.Data<Number,Number>> approxValues;
-
+    public double getMaxLTE(List<Number> steps, InitialValueProblem initialValueProblem){
         double maxError = 0.0;
 
-        exactValues = exactSolution.solutionFunc(steps, initialValueProblem);
-        approxValues = methodToCompare.solutionFunc(steps, initialValueProblem);
-
-        for(int i = 0; i < exactValues.size(); i++){
-            maxError = Math.max(exactValues.get(i).getYValue().doubleValue() - approxValues.get(i).getYValue().doubleValue(), maxError);
+        for(var point : getLTEForSteps(steps, initialValueProblem)){
+            maxError = Math.max(maxError, point.getYValue().doubleValue());
         }
-
 
         return maxError;
     }
