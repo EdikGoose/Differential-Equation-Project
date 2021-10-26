@@ -5,16 +5,11 @@ import innopolis.university.differentialequationproject.graphsControllers.Graphs
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.LinkedHashMap;
 
 
 public class SettingsPaneWrapper {
@@ -22,19 +17,21 @@ public class SettingsPaneWrapper {
 
     private final VBox settingsBox;
     private final Label exceptionLabel;
-    private final Label[] labels = new Label[]{new javafx.scene.control.Label("X0:"), new javafx.scene.control.Label("Y0:"), new javafx.scene.control.Label("X_MAX:"), new javafx.scene.control.Label("N:"), new javafx.scene.control.Label("Max N: ")};
-    private final TextField[] textFields = new TextField[]{new javafx.scene.control.TextField("1"), new javafx.scene.control.TextField("10"), new javafx.scene.control.TextField("10"), new javafx.scene.control.TextField("100"), new javafx.scene.control.TextField("200")};
-
+    private final LinkedHashMap<String, TextField> inputFields;
 
     public SettingsPaneWrapper(ObservableList<GraphsController> listOfCharts, TabPane paneOfCharts) {
         root = new ScrollPane();
         root.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        root.setFitToWidth(true);
+
 
         this.settingsBox = new VBox();
         this.settingsBox.setStyle("-fx-border-color: black;");
         this.settingsBox.setAlignment(Pos.CENTER);
         this.settingsBox.setSpacing(10);
+
+        this.inputFields = new LinkedHashMap<>();
 
         this.exceptionLabel = new Label("ERROR");
         this.exceptionLabel.setStyle("-fx-border-color: red;");
@@ -49,9 +46,15 @@ public class SettingsPaneWrapper {
     }
 
     private void addInputFields(){
-        for (int i = 0; i < labels.length; i++) {
-            settingsBox.getChildren().add(labels[i]);
-            settingsBox.getChildren().add(textFields[i]);
+        inputFields.put("X0",new TextField("1"));
+        inputFields.put("Y0",new TextField("10"));
+        inputFields.put("Max X",new TextField("10"));
+        inputFields.put("N",new TextField("100"));
+        inputFields.put("Max N",new TextField("200"));
+
+        for(var inputField : inputFields.entrySet()){
+            settingsBox.getChildren().add(new Label(inputField.getKey()));
+            settingsBox.getChildren().add(inputField.getValue());
         }
     }
 
@@ -60,15 +63,19 @@ public class SettingsPaneWrapper {
 
         browser.setMaxHeight(300);
         WebEngine webEngine = browser.getEngine();
-        File file = new File("/home/edikgoose/IdeaProjects/Differential-Equation-Project/src/main/resources/innopolis/university/differentialequationproject/DifferentialEquation.html");
-        URL url = null;
-        try {
-            url = file.toURI().toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        assert url != null;
-        webEngine.load(url.toString());
+        String html =  """
+                        <!-- LOAD THE MATHJAX LIBRARY -->
+                        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+                        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+                        $$\\text{Differential equation: }$$
+                        $$\\begin{cases}y' = \\frac{\\sqrt{y-x}}{\\sqrt{x}} + 1\\\\y(1)=10 \\\\ x \\in (1;10)\\end{cases}\\\\ $$
+
+                        $$\\text{Solution: }$$
+                        $$\\begin{cases}y = x(\\frac{1}{C^2x} - \\frac{2}{C\\sqrt{x}}+2) \\text{, where } x > 0, C \\ne 0
+                        \\\\C_1 = \\frac{1}{4} \\text{, } C_2 = -\\frac{1}{2}\\end{cases}\\\\$$""";
+
+        webEngine.loadContent(html);
 
         settingsBox.getChildren().add(browser);
     }
@@ -106,11 +113,10 @@ public class SettingsPaneWrapper {
                 for (var lineChart : listOfLineCharts) {
                     paneOfCharts.setVisible(true);
                     lineChart.update(
-                            new InitialValueProblem(Double.parseDouble(textFields[0].getText()),
-                                    Double.parseDouble(textFields[1].getText())),
-                            Integer.parseInt(textFields[3].getText()),
-                            Double.parseDouble(textFields[2].getText()),
-                            Integer.parseInt(textFields[4].getText())
+                            new InitialValueProblem(Double.parseDouble(inputFields.get("X0").getText()), Double.parseDouble(inputFields.get("Y0").getText())),
+                            Double.parseDouble(inputFields.get("Max X").getText()),
+                            Integer.parseInt(inputFields.get("N").getText()),
+                            Integer.parseInt(inputFields.get("Max N").getText())
                     );
                     settingsBox.getChildren().remove(exceptionLabel);
                 }
@@ -126,7 +132,7 @@ public class SettingsPaneWrapper {
     }
 
 
-    public VBox getRoot() {
-        return settingsBox;
+    public ScrollPane getRoot() {
+        return root;
     }
 }

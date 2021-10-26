@@ -31,7 +31,7 @@ public abstract class GraphsController {
         chart.setTitle(title);
     }
 
-    public void update(InitialValueProblem initialValueProblem, int numberOfPoints, double maxX, int maxN){
+    public void update(InitialValueProblem initialValueProblem, double maxX, int numberOfPoints, int maxN){
         for(var graph : listOfSeriesOfPointsController){
             graph.update(initialValueProblem,numberOfPoints,maxX,maxN);
         }

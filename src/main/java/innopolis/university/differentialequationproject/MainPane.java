@@ -8,18 +8,11 @@ public class MainPane extends Application {
     @Override
     public void start(Stage primaryStage) {
         MainGraphsPane mainGraphsPane = new MainGraphsPane();
-
-
-
         Scene scene = new Scene(mainGraphsPane.getRoot());
 
         primaryStage.setScene(scene);
-        primaryStage.setFullScreen(true);
 
         primaryStage.show();
-
-
-
     }
 
     public static void main(String[] args) {
