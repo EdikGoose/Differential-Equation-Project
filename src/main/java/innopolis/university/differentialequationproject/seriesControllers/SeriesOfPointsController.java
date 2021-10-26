@@ -1,4 +1,4 @@
-package innopolis.university.differentialequationproject.SeriesControllers;
+package innopolis.university.differentialequationproject.seriesControllers;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
 import javafx.scene.chart.XYChart;

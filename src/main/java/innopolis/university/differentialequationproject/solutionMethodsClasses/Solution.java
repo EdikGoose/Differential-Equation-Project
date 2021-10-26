@@ -1,4 +1,4 @@
-package innopolis.university.differentialequationproject.SolutionMethodsClasses;
+package innopolis.university.differentialequationproject.solutionMethodsClasses;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
 import javafx.collections.ObservableList;

@@ -11,10 +11,12 @@ module innopolis.university.differentialequationproject {
 
     opens innopolis.university.differentialequationproject to javafx.fxml;
     exports innopolis.university.differentialequationproject;
-    exports innopolis.university.differentialequationproject.SolutionMethodsClasses;
-    opens innopolis.university.differentialequationproject.SolutionMethodsClasses to javafx.fxml;
-    exports innopolis.university.differentialequationproject.SeriesControllers;
-    opens innopolis.university.differentialequationproject.SeriesControllers to javafx.fxml;
-    exports innopolis.university.differentialequationproject.GraphsControllers;
-    opens innopolis.university.differentialequationproject.GraphsControllers to javafx.fxml;
+    exports innopolis.university.differentialequationproject.solutionMethodsClasses;
+    opens innopolis.university.differentialequationproject.solutionMethodsClasses to javafx.fxml;
+    exports innopolis.university.differentialequationproject.seriesControllers;
+    opens innopolis.university.differentialequationproject.seriesControllers to javafx.fxml;
+    exports innopolis.university.differentialequationproject.graphsControllers;
+    opens innopolis.university.differentialequationproject.graphsControllers to javafx.fxml;
+    exports innopolis.university.differentialequationproject.paneWrappers;
+    opens innopolis.university.differentialequationproject.paneWrappers to javafx.fxml;
 }

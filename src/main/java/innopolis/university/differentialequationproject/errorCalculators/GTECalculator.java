@@ -1,7 +1,7 @@
-package innopolis.university.differentialequationproject.ErrorCalculators;
+package innopolis.university.differentialequationproject.errorCalculators;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.Solution;
+import innopolis.university.differentialequationproject.solutionMethodsClasses.Solution;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
@@ -26,7 +26,7 @@ public class GTECalculator {
             double step = (steps.get(steps.size()-1).doubleValue() - steps.get(0).doubleValue())/currentN;
 
             ObservableList<Number> listOfNewSteps = FXCollections.observableArrayList();
-            for(double x = initialValueProblem.getX0(); x < steps.get(steps.size()-1).doubleValue(); x+=step){
+            for(double x = initialValueProblem.X0(); x < steps.get(steps.size()-1).doubleValue(); x+=step){
                 listOfNewSteps.add(x);
             }
 

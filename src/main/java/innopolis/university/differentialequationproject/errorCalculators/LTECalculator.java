@@ -1,8 +1,8 @@
-package innopolis.university.differentialequationproject.ErrorCalculators;
+package innopolis.university.differentialequationproject.errorCalculators;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.ExactSolution;
-import innopolis.university.differentialequationproject.SolutionMethodsClasses.Solution;
+import innopolis.university.differentialequationproject.solutionMethodsClasses.ExactSolution;
+import innopolis.university.differentialequationproject.solutionMethodsClasses.Solution;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;

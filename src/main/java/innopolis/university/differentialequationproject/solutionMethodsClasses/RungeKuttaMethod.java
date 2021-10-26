@@ -1,4 +1,4 @@
-package innopolis.university.differentialequationproject.SolutionMethodsClasses;
+package innopolis.university.differentialequationproject.solutionMethodsClasses;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
 import javafx.collections.FXCollections;
@@ -20,7 +20,7 @@ public class RungeKuttaMethod implements Solution{
     @Override
     public ObservableList<XYChart.Data<Number, Number>> solutionFunc(List<Number> steps, InitialValueProblem initialValueProblem) {
         ObservableList<XYChart.Data<Number,Number>> values = FXCollections.observableArrayList();
-        values.add(new XYChart.Data<>(initialValueProblem.getX0(), initialValueProblem.getY0()));
+        values.add(new XYChart.Data<>(initialValueProblem.X0(), initialValueProblem.Y0()));
         double sizeOfStep = steps.get(1).doubleValue() - steps.get(0).doubleValue();
 
 

@@ -1,7 +1,7 @@
-package innopolis.university.differentialequationproject.GraphsControllers;
+package innopolis.university.differentialequationproject.graphsControllers;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
-import innopolis.university.differentialequationproject.SeriesControllers.SeriesOfPointsController;
+import innopolis.university.differentialequationproject.seriesControllers.SeriesOfPointsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;

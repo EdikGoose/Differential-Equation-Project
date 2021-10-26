@@ -1,4 +1,4 @@
-package innopolis.university.differentialequationproject.SolutionMethodsClasses;
+package innopolis.university.differentialequationproject.solutionMethodsClasses;
 
 import innopolis.university.differentialequationproject.InitialValueProblem;
 import javafx.collections.FXCollections;
@@ -7,15 +7,16 @@ import javafx.scene.chart.XYChart;
 
 import java.util.List;
 
-public class EulerMethod implements Solution{
+public class ImprovedEulerMethod implements Solution{
     private double getNextY(double previousX, double previousY, double sizeOfStep){
-        return previousY + (func(previousX, previousY)) * sizeOfStep;
+        double K1 = sizeOfStep*func(previousX, previousY);
+        double K2 = sizeOfStep*func(previousX+sizeOfStep, previousY+K1);
+        return previousY + (1.0/2.0)*(K1 + K2);
     }
-
     @Override
-    public ObservableList<XYChart.Data<Number, Number>> solutionFunc(List<Number> steps, InitialValueProblem initialValueProblem) throws IllegalArgumentException {
+    public ObservableList<XYChart.Data<Number, Number>> solutionFunc(List<Number> steps, InitialValueProblem initialValueProblem) {
         ObservableList<XYChart.Data<Number,Number>> values = FXCollections.observableArrayList();
-        values.add(new XYChart.Data<>(initialValueProblem.getX0(), initialValueProblem.getY0()));
+        values.add(new XYChart.Data<>(initialValueProblem.X0(), initialValueProblem.Y0()));
         double sizeOfStep = steps.get(1).doubleValue() - steps.get(0).doubleValue();
 
 
