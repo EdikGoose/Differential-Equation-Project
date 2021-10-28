@@ -147,11 +147,6 @@ For comparison, let's use such input:
 - Max value of X is 10
 - The number of points is 11
 
-[Value comparison](https://www.notion.so/b38cea32136d467d84e682f9f0ee19a7)
-
-[Error comparison](https://www.notion.so/8d8309faec124c8dbffc2ea876197fe9)
-
-**Graphs from the program:**
 
 ![Screenshot from 2021-10-27 11-55-35.png](https://github.com/EdikGoose/Differential-Equation-Project/blob/main/pictures/LTE.png)
 
