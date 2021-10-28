@@ -159,3 +159,16 @@ For comparison, let's use such input:
 *(Global Truncation Error = max error of Local Truncation Errors for N)*
 
 For larger N we obtain fewer errors, which is obvious because numerical methods are more precise for the smaller step of the calculation.
+
+## Version
+* JavaFX 17
+* Java 17
+
+
+## How to use
+* Clone this repository to your machine
+* Build the project and enjoy
+
+
+# Main contributor
+* Eduard Zaripov, e.zaripov@innopolis.university
