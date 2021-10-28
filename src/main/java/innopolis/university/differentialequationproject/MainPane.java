@@ -37,7 +37,7 @@ public class MainPane extends Application {
     public void start(Stage primaryStage) {
         GridPane root = gridPaneInitialize();
         ObservableList<GraphsController> listOfLineCharts = FXCollections.observableArrayList();
-        listOfLineCharts.addAll(new MainGraphsController("Main Graphs"), new LTEGraphsController("Local Transaction Error"), new GTEGraphsController("Global Transaction Error"));
+        listOfLineCharts.addAll(new MainGraphsController("Main Graphs"), new LTEGraphsController("Local Truncation Error"), new GTEGraphsController("Global Truncation Error"));
         
         TabPane tabPaneOfCharts = new TabPane();
         for (var lineChart : listOfLineCharts) {

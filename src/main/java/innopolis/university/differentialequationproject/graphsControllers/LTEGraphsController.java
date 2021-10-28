@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 public class LTEGraphsController extends GraphsController{
     public LTEGraphsController(String title) {
         super(title);
+        super.chart.getYAxis().setLabel("Error value");
     }
 
     @Override

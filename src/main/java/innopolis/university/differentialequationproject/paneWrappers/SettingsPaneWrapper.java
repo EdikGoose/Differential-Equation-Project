@@ -47,10 +47,10 @@ public class SettingsPaneWrapper {
 
     private void addInputFields(){
         inputFields.put("X0",new TextField("1"));
-        inputFields.put("Y0",new TextField("10"));
+        inputFields.put("Y0",new TextField("100"));
         inputFields.put("Max X",new TextField("10"));
-        inputFields.put("N",new TextField("100"));
-        inputFields.put("Max N",new TextField("200"));
+        inputFields.put("N",new TextField("11"));
+        inputFields.put("Max N",new TextField("500"));
 
         for(var inputField : inputFields.entrySet()){
             settingsBox.getChildren().add(new Label(inputField.getKey()));

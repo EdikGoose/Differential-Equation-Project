@@ -12,6 +12,8 @@ import javafx.collections.ObservableList;
 public class GTEGraphsController extends GraphsController{
     public GTEGraphsController(String title) {
         super(title);
+        super.chart.getXAxis().setLabel("N axis");
+        super.chart.getYAxis().setLabel("Error value");
     }
 
     @Override

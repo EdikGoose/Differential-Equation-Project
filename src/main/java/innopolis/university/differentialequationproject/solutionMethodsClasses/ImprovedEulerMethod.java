@@ -13,6 +13,7 @@ public class ImprovedEulerMethod implements Solution{
         double K2 = sizeOfStep*func(previousX+sizeOfStep, previousY+K1);
         return previousY + (1.0/2.0)*(K1 + K2);
     }
+
     @Override
     public ObservableList<XYChart.Data<Number, Number>> solutionFunc(List<Number> steps, InitialValueProblem initialValueProblem) {
         ObservableList<XYChart.Data<Number,Number>> values = FXCollections.observableArrayList();
