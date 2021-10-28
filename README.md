@@ -46,7 +46,7 @@ public abstract class GraphsController{
 
 ---
 
-### `**SeriesOfPointsController` class**
+### ***`SeriesOfPointsController` class***
 
 `GraphsConroller` class contains list of **`SeriesOfPointsController`** classes for exact solution and methods:
 
