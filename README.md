@@ -1,8 +1,7 @@
 # DE Computational Assignment
 
 
-![UML.png](DE%20Computational%20Assignment%209a09ea0103474ff9ae6945c10740017e/UML.png)
-
+![uml](https://github.com/EdikGoose/Differential-Equation-Project/blob/main/pictures/UML.png)
 ## Explanation of architecture:
 
 ### `MainPane` class build main view.
@@ -16,7 +15,7 @@ Settings consists of:
 - Check box for hide graphs for more comfortable comparison
 - Update button
 
-![Screenshot from 2021-10-27 12-07-32.png](DE%20Computational%20Assignment%209a09ea0103474ff9ae6945c10740017e/Screenshot_from_2021-10-27_12-07-32.png)
+![settings](https://github.com/EdikGoose/Differential-Equation-Project/blob/main/pictures/Settings.png)
 
 ---
 
@@ -154,13 +153,13 @@ For comparison, let's use such input:
 
 **Graphs from the program:**
 
-![Screenshot from 2021-10-27 11-55-35.png](DE%20Computational%20Assignment%209a09ea0103474ff9ae6945c10740017e/Screenshot_from_2021-10-27_11-55-35.png)
+![Screenshot from 2021-10-27 11-55-35.png](https://github.com/EdikGoose/Differential-Equation-Project/blob/main/pictures/LTE.png)
 
 *As we can see, the **Euler method** gives the largest error(more than* 3*!). **Improved Euler** method obviously is much better, but **Runge-Kutta** is a leader(less than* 0.003*)*
 
 ### For Global Truncation error we see such situation:
 
-![Screenshot from 2021-10-27 11-52-42.png](DE%20Computational%20Assignment%209a09ea0103474ff9ae6945c10740017e/Screenshot_from_2021-10-27_11-52-42.png)
+![Screenshot from 2021-10-27 11-52-42.png](https://github.com/EdikGoose/Differential-Equation-Project/blob/main/pictures/GTE.png)
 
 *(Global Truncation Error = max error of Local Truncation Errors for N)*
 
